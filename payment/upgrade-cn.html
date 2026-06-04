@@ -3,23 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellify AI Pro — 升级付费</title>
+  <title>Sellify AI Pro — 升级</title>
   <style>
-    :root { --bg: #0f1117; --surface: #1a1d27; --border: #2e3347; --text: #e8ecf1; --muted: #8b91a8; --primary: #6366f1; --gold: #f59e0b; }
+    :root { --bg: #0f1117; --surface: #1a1d27; --border: #2e3347; --text: #e8ecf1; --muted: #8b91a8; --primary: #6366f1; --gold: #f59e0b; --success: #10b981; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px; max-width: 440px; width: 100%; text-align: center; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; max-width: 440px; width: 100%; text-align: center; }
     .logo { font-size: 48px; margin-bottom: 8px; }
     h1 { font-size: 22px; margin-bottom: 4px; }
-    .sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
-    .price { font-size: 42px; font-weight: 800; color: var(--gold); margin: 16px 0; }
+    .sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+    .price { font-size: 42px; font-weight: 800; color: var(--gold); margin: 12px 0; }
     .price span { font-size: 16px; font-weight: 400; color: var(--muted); }
-    ul { text-align: left; margin: 16px 0; }
-    ul li { padding: 6px 0; font-size: 14px; list-style: none; border-bottom: 1px solid var(--border); }
+    ul { text-align: left; margin: 12px 0; }
+    ul li { padding: 5px 0; font-size: 13px; list-style: none; }
     ul li::before { content: '✓ '; color: #10b981; font-weight: 700; }
-    .steps { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 16px 0; text-align: left; font-size: 13px; line-height: 2; }
-    .steps span { display: inline-block; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; text-align: center; line-height: 22px; font-size: 12px; font-weight: 700; margin-right: 6px; }
-    .alert { background: #1a2a1a; border: 1px solid #2a4a2a; border-radius: 8px; padding: 12px; font-size: 13px; color: #10b981; margin: 12px 0; }
+    .qr-box { display: flex; gap: 12px; margin: 16px 0; justify-content: center; }
+    .qr-item { text-align: center; }
+    .qr-item img { width: 140px; height: 140px; border-radius: 8px; }
+    .qr-item .alipay { border: 2px solid #1677FF; }
+    .qr-item .wechat { border: 2px solid #07C160; }
+    .qr-label { font-size: 12px; margin-top: 4px; font-weight: 600; }
+    input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 14px; text-align: center; margin: 8px 0; }
+    input:focus { outline: none; border-color: var(--primary); }
+    .btn { display: block; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), #fbbf24); color: #1a1a1a); }
+    .btn-gold:hover { opacity: 0.9; }
+    .result { margin-top: 16px; padding: 16px; background: #0d2818; border: 1px solid #1a5c36; border-radius: 8px; display: none; }
+    .result .key { font-size: 24px; font-weight: 700; color: var(--success); letter-spacing: 2px; margin: 8px 0; word-break: break-all; }
+    .result .howto { font-size: 12px; color: var(--muted); margin-top: 8px; text-align: left; line-height: 1.8; }
+    .result .howto span { display: inline-block; width: 18px; height: 18px; background: var(--primary); color: white; border-radius: 50%; text-align: center; line-height: 18px; font-size: 11px; margin-right: 4px; }
+    .copy-btn { background: var(--success); color: white; margin-top: 8px; }
+    .note { font-size: 11px; color: var(--muted); margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -33,35 +47,79 @@
     <ul>
       <li>无限次 AI 产品优化</li>
       <li>无限次竞品评论分析</li>
-      <li>无限次关键词挖掘</li>
-      <li>无限次营销文案生成</li>
-      <li>支持 Amazon / eBay / Etsy</li>
+      <li>无限次关键词挖掘 + 营销文案</li>
       <li>一次付费，永久使用</li>
     </ul>
 
-    <div style="display: flex; gap: 16px; margin: 20px 0; justify-content: center;">
-      <div style="text-align: center;">
-        <img src="alipay-qr.jpg" alt="支付宝" style="width: 160px; height: 160px; border-radius: 8px; border: 2px solid #1677FF;" />
-        <p style="font-size: 12px; margin-top: 6px; color: #1677FF;">支付宝</p>
+    <div class="qr-box">
+      <div class="qr-item">
+        <img src="alipay-qr.jpg" alt="支付宝" class="alipay" />
+        <p class="qr-label" style="color:#1677FF;">支付宝</p>
       </div>
-      <div style="text-align: center;">
-        <img src="wechat-qr.jpg" alt="微信" style="width: 160px; height: 160px; border-radius: 8px; border: 2px solid #07C160;" />
-        <p style="font-size: 12px; margin-top: 6px; color: #07C160;">微信支付</p>
+      <div class="qr-item">
+        <img src="wechat-qr.jpg" alt="微信" class="wechat" />
+        <p class="qr-label" style="color:#07C160;">微信支付</p>
       </div>
     </div>
 
-    <div class="steps">
-      <p><span>1</span> <strong>上方扫码支付 ¥65</strong></p>
-      <p><span>2</span> <strong>保留付款截图</strong></p>
-      <p><span>3</span> <strong>发送截图到邮箱</strong></p>
-      <p style="margin-left: 28px; font-size: 13px; word-break: break-all;">📧 sellify.ai@proton.me</p>
-      <p><span>4</span> <strong>24小时内收到许可证</strong></p>
-      <p style="margin-left: 28px; font-size: 13px;">在扩展设置里输入 → 解锁 Pro</p>
-    </div>
+    <p style="font-size:13px;margin-bottom:4px;">💰 扫码支付 ¥65</p>
 
-    <div class="alert">
-      ⚠️ 付款时请备注你的<strong>邮箱地址</strong>，<br>许可证将发送到该邮箱
+    <input type="email" id="emailInput" placeholder="付款后输入你的邮箱" />
+    <button class="btn btn-gold" onclick="activate()">🎫 获取许可证密钥</button>
+    <p class="note">输入邮箱即可立即获取，无需等待</p>
+
+    <div class="result" id="result">
+      <p style="font-size:12px;color:var(--muted)">🔑 你的 Pro 许可证：</p>
+      <div class="key" id="keyDisplay"></div>
+      <button class="btn copy-btn" onclick="copyIt()">📋 一键复制</button>
+      <div class="howto">
+        <p><span>1</span> 复制上方许可证</p>
+        <p><span>2</span> 打开扩展 → ⚙️ 设置</p>
+        <p><span>3</span> 粘贴到 License Key → Activate</p>
+        <p><span>4</span> ✅ Pro 已激活！无限使用</p>
+      </div>
     </div>
   </div>
+
+  <script>
+    const SECRET = 'sellify-ai-pro-secret-key-2026';
+
+    async function generateKey(email) {
+      // Generate a deterministic key from email + secret
+      const data = email.trim().toLowerCase() + ':' + SECRET;
+      const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      // Format: SELL-XXXX-XXXX-XXXX
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let key = '';
+      for (let i = 0; i < 20; i++) {
+        const idx = hashArray[i % hashArray.length] % chars.length;
+        key += chars[idx];
+      }
+      // Insert dashes
+      key = 'SELL-' + key.substring(0, 4) + '-' + key.substring(4, 8) + '-' + key.substring(8, 12) + '-' + key.substring(12, 16);
+      return key;
+    }
+
+    async function activate() {
+      const email = document.getElementById('emailInput').value.trim();
+      if (!email || !email.includes('@')) {
+        alert('请输入有效的邮箱地址');
+        return;
+      }
+
+      const key = await generateKey(email);
+      document.getElementById('keyDisplay').textContent = key;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function copyIt() {
+      const key = document.getElementById('keyDisplay').textContent;
+      navigator.clipboard.writeText(key).then(() => {
+        alert('✅ 已复制！去扩展设置里粘贴激活即可。');
+      });
+    }
+  </script>
 </body>
 </html>

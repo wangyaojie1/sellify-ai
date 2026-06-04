@@ -121,7 +121,8 @@ function setupButtons() {
       }
     } catch (e) {
       // If server is not reachable, accept locally-formatted keys as fallback
-      if (/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(licenseKey)) {
+      if (/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(licenseKey) ||
+          /^SELL-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(licenseKey)) {
         await chrome.storage.sync.set({ plan: 'pro', licenseKey });
         updatePlanUI('pro');
         statusEl.textContent = '✅ License activated (offline mode)!';
