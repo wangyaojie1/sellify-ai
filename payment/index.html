@@ -1,200 +1,203 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellify AI Pro</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-    :root {
-      --bg: #0a0a0f; --surface: #111118; --card: #16161f; --border: #222233;
-      --text: #f0f0f5; --text2: #8888aa; --primary: #6c5ce7; --primary-light: #a29bfe;
-      --primary-glow: rgba(108,92,231,0.15); --gold: #ffa726; --success: #00c853;
-      --danger: #ff5252; --wechat: #07c160; --alipay: #1677ff;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg); color: var(--text); min-height: 100vh;
-      display: flex; align-items: center; justify-content: center; padding: 20px;
-      background-image:
-        radial-gradient(ellipse at 20% 0%, rgba(108,92,231,0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 100%, rgba(255,167,38,0.05) 0%, transparent 50%);
-    }
-    .container { display: flex; gap: 32px; max-width: 880px; width: 100%; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sellify AI — Upgrade to Pro</title>
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    --c-bg: #000000;
+    --c-surface: #0d0d0d;
+    --c-card: #141414;
+    --c-border: #222222;
+    --c-border-light: #2a2a2a;
+    --c-text: #ededed;
+    --c-text-dim: #888888;
+    --c-text-muted: #555555;
+    --c-accent: #ffffff;
+    --c-green: #00e676;
+    --c-green-dim: rgba(0,230,118,0.08);
+    --c-green-border: rgba(0,230,118,0.15);
+    --c-red: #ff3d3d;
+    background: var(--c-bg); color: var(--c-text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
 
-    /* Product Card */
-    .product-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
-      padding: 40px; flex: 1 1 360px; max-width: 420px; min-width: 320px;
-      position: relative; overflow: hidden;
-    }
-    .product-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--gold));
-    }
-    .badge-row {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--primary-glow); border: 1px solid rgba(108,92,231,0.3);
-      padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600;
-      color: var(--primary-light); margin-bottom: 20px;
-    }
-    .badge-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .logo-icon {
-      width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), #a29bfe);
-      border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;
-    }
-    .logo-text { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-    .logo-text span { background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
-    .features { display: grid; gap: 12px; margin-bottom: 28px; }
-    .feature { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #ccc; line-height: 1.5; }
-    .feature .ficon { width: 20px; height: 20px; background: rgba(0,200,83,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
-    .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
-    .price-value { font-size: 48px; font-weight: 900; letter-spacing: -2px; color: var(--gold); }
-    .price-unit { font-size: 16px; font-weight: 500; color: var(--text2); }
-    .price-old { font-size: 14px; color: var(--text2); text-decoration: line-through; }
-    .price-badge { display: inline-block; background: rgba(255,82,82,0.15); color: var(--danger); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-left: 4px; }
-    .platforms { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
-    .ptag { font-size: 11px; padding: 5px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); font-weight: 500; }
-    .guarantee { display: flex; align-items: center; gap: 8px; padding: 12px; background: rgba(0,200,83,0.05); border: 1px solid rgba(0,200,83,0.15); border-radius: 10px; font-size: 12px; color: var(--success); margin-top: 20px; }
+  .container { display:flex; gap:40px; max-width:960px; width:100%; }
+  @media(max-width:768px){ .container{ flex-direction:column; } }
 
-    /* Payment Card */
-    .payment-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
-      padding: 32px; flex: 1 1 320px; max-width: 380px; min-width: 300px; position: sticky; top: 20px;
-    }
-    .payment-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
-    .tabs { display: flex; background: var(--surface); border-radius: 10px; padding: 3px; margin-bottom: 20px; }
-    .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s; font-family: inherit; }
-    .tab-btn.active { background: var(--card); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-    .qr-wrapper { display: flex; gap: 12px; justify-content: center; margin: 16px 0; }
-    .qr-item { text-align: center; padding: 16px 12px 12px; background: #fff; border-radius: 12px; width: 142px; }
-    .qr-item img { width: 110px; height: 110px; border-radius: 4px; }
-    .qr-label { font-size: 12px; font-weight: 700; margin-top: 8px; }
-    .input-group { margin: 12px 0; }
-    .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .input-group input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 14px; font-family: inherit; text-align: center; transition: all 0.2s; }
-    .input-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; margin-top: 8px; }
-    .btn-gold { background: linear-gradient(135deg, #ffa726, #ff9800); color: #1a1a1a; box-shadow: 0 4px 16px rgba(255,167,38,0.2); }
-    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(255,167,38,0.3); }
-    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 16px rgba(108,92,231,0.2); }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(108,92,231,0.3); }
-    .btn-success { background: var(--success); color: white; }
-    .stripe-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: #635BFF; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; font-family: inherit; margin: 12px 0; transition: all 0.2s; }
-    .stripe-btn:hover { background: #7c75ff; }
-    .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: var(--text2); font-size: 11px; }
-    .divider::before,.divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .result-box { margin-top: 16px; padding: 20px; background: linear-gradient(135deg, rgba(0,200,83,0.08), rgba(0,200,83,0.02)); border: 1px solid rgba(0,200,83,0.2); border-radius: 14px; display: none; text-align: center; }
-    .result-box .key-text { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: var(--success); margin: 10px 0; font-family: 'SF Mono','Fira Code',monospace; word-break: break-all; }
-    .result-box .steps { text-align: left; margin-top: 12px; font-size: 12px; color: #aaa; line-height: 2; }
-    .result-box .steps span { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--primary); color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; margin-right: 6px; }
-    .footer-note { text-align: center; font-size: 11px; color: var(--text2); margin-top: 16px; }
-  </style>
+  /* Left */
+  .hero { flex:1.1; display:flex; flex-direction:column; justify-content:center; padding:20px 0; }
+  .hero .logo { display:flex; align-items:center; gap:10px; margin-bottom:32px; }
+  .hero .logo .icon {
+    width:36px; height:36px; border-radius:9px;
+    background:linear-gradient(135deg, #fff 0%, #ccc 100%);
+    display:flex; align-items:center; justify-content:center; font-size:18px; color:#000;
+  }
+  .hero .logo .word { font-size:18px; font-weight:700; letter-spacing:-0.3px; }
+  .hero .logo .word em { font-style:normal; color:var(--c-text-dim); font-weight:400; }
+  .hero h1 { font-size:42px; font-weight:700; letter-spacing:-1px; line-height:1.1; margin-bottom:16px; }
+  .hero h1 .hl { background:linear-gradient(180deg, #fff 0%, #aaa 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero p.lead { font-size:16px; color:var(--c-text-dim); line-height:1.6; max-width:420px; }
+
+  .benefits { margin-top:40px; display:grid; gap:14px; }
+  .benefits .b { display:flex; align-items:flex-start; gap:12px; font-size:14px; color:var(--c-text-dim); line-height:1.5; }
+  .benefits .b .check { width:20px; height:20px; border-radius:6px; background:var(--c-green-dim); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; font-size:11px; }
+  .benefits .b strong { color:var(--c-text); font-weight:600; display:block; }
+  .hero .trust { margin-top:36px; display:flex; align-items:center; gap:12px; font-size:13px; color:var(--c-text-muted); }
+  .hero .trust .avatars { display:flex; }
+  .hero .trust .avatars span { width:28px; height:28px; border-radius:50%; background:var(--c-surface); border:2px solid var(--c-border); display:flex; align-items:center; justify-content:center; font-size:12px; margin-left:-8px; }
+  .hero .trust .avatars span:first-child { margin-left:0; }
+
+  /* Right */
+  .panel { flex:0.9; min-width:340px; }
+  .panel .card {
+    background:var(--c-card); border:1px solid var(--c-border); border-radius:20px;
+    padding:32px; position:sticky; top:24px;
+  }
+  .panel .card h3 { font-size:17px; font-weight:600; margin-bottom:24px; letter-spacing:-0.2px; }
+
+  .tab-row { display:flex; background:var(--c-surface); border-radius:10px; padding:3px; margin-bottom:24px; }
+  .tab-row button { flex:1; padding:10px; border:none; background:none; color:var(--c-text-muted); font-size:13px; font-weight:500; cursor:pointer; border-radius:8px; transition:.15s; font-family:inherit; }
+  .tab-row button.on { background:var(--c-card); color:var(--c-text); box-shadow:0 1px 3px rgba(0,0,0,0.5); }
+
+  .tab-content { display:none; }
+  .tab-content.on { display:block; }
+
+  .qr-row { display:flex; gap:12px; justify-content:center; margin-bottom:20px; }
+  .qr { background:#fff; border-radius:14px; padding:18px 14px 14px; text-align:center; width:148px; }
+  .qr img { width:112px; height:112px; border-radius:4px; display:block; margin:0 auto; }
+  .qr .name { font-size:12px; font-weight:700; margin-top:10px; letter-spacing:-0.2px; }
+  .price { text-align:center; margin-bottom:20px; }
+  .price .big { font-size:40px; font-weight:800; letter-spacing:-1.5px; color:var(--c-accent); }
+  .price .big sub { font-size:14px; font-weight:400; color:var(--c-text-dim); bottom:0; }
+  .price .old { font-size:13px; color:var(--c-text-muted); text-decoration:line-through; margin-right:6px; }
+  .price .tag { font-size:11px; font-weight:600; color:var(--c-green); background:var(--c-green-dim); padding:3px 8px; border-radius:4px; }
+
+  .field { margin-bottom:14px; }
+  .field label { display:block; font-size:11px; font-weight:600; color:var(--c-text-muted); letter-spacing:0.5px; margin-bottom:6px; text-transform:uppercase; }
+  .field input { width:100%; padding:12px 14px; border:1px solid var(--c-border); border-radius:10px; background:var(--c-surface); color:var(--c-text); font-size:14px; font-family:inherit; text-align:center; transition:.15s; }
+  .field input:focus { outline:none; border-color:var(--c-accent); }
+
+  .btn { width:100%; padding:14px; border:none; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; transition:.15s; letter-spacing:-0.2px; }
+  .btn-w { background:#fff; color:#000; }
+  .btn-w:hover { background:#e6e6e6; }
+  .btn-s { background:var(--c-green); color:#000; font-weight:700; }
+  .btn-s:hover { background:#00c753; }
+
+  .stripe-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; background:#635BFF; color:#fff; border:none; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; text-decoration:none; font-family:inherit; letter-spacing:-0.2px; transition:.15s; }
+  .stripe-btn:hover { background:#7c75ff; }
+
+  .divider { display:flex; align-items:center; gap:12px; margin:18px 0; color:var(--c-text-muted); font-size:11px; }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--c-border); }
+
+  .result { margin-top:18px; padding:20px; background:var(--c-green-dim); border:1px solid var(--c-green-border); border-radius:14px; display:none; text-align:center; animation:fadeIn .3s; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .result .key { font-size:22px; font-weight:800; letter-spacing:1px; color:var(--c-green); margin:10px 0; font-family:'SF Mono','Fira Code','Consolas',monospace; word-break:break-all; }
+  .result .steps { text-align:left; margin-top:14px; font-size:12px; color:var(--c-text-dim); line-height:2.2; }
+  .result .steps span { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#fff; color:#000; border-radius:50%; font-size:10px; font-weight:700; margin-right:8px; }
+
+  .footer-note { text-align:center; margin-top:16px; font-size:11px; color:var(--c-text-muted); }
+
+  .paypal-row { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; background:var(--c-surface); border-radius:10px; margin:12px 0; font-size:14px; font-weight:500; }
+  .paypal-row code { font-size:14px; color:var(--c-accent); }
+</style>
 </head>
 <body>
-  <div class="container">
 
-    <!-- Product Info -->
-    <div class="product-card">
-      <div class="badge-row"><span class="badge-dot"></span> 电商卖家都在用</div>
-      <div class="logo-row"><div class="logo-icon">⚡</div><div class="logo-text">Sellify <span>AI</span></div></div>
-      <p class="subtitle">AI 产品优化助手 · 10 秒写出高转化 Listing</p>
-      <div class="features">
-        <div class="feature"><div class="ficon">🎯</div><div><strong>Listing 优化</strong><br>AI 重写标题、卖点、描述，提升搜索排名</div></div>
-        <div class="feature"><div class="ficon">📊</div><div><strong>竞品评论分析</strong><br>从差评中找缺口，差异化你的产品</div></div>
-        <div class="feature"><div class="ficon">🔑</div><div><strong>关键词挖掘</strong><br>生成高转化搜索词，提升曝光</div></div>
-        <div class="feature"><div class="ficon">📢</div><div><strong>广告文案</strong><br>Facebook、TikTok 广告文案一键生成</div></div>
-      </div>
-      <div class="platforms"><span class="ptag">Amazon</span><span class="ptag">eBay</span><span class="ptag">Etsy</span><span class="ptag">AliExpress</span><span class="ptag">Shopify</span></div>
-      <div class="price-row"><span class="price-value">¥65</span><span class="price-unit">/ 永久</span></div>
-      <div><span class="price-old">¥199</span><span class="price-badge">67% OFF</span></div>
-      <div class="guarantee">🔒 30 天无理由退款 · 零风险</div>
+<div class="container">
+
+  <!-- Left -->
+  <div class="hero">
+    <div class="logo">
+      <div class="icon">⚡</div>
+      <div class="word">Sellify <em>AI</em></div>
     </div>
 
-    <!-- Payment -->
-    <div class="payment-card">
-      <h3>💳 升级 Pro</h3>
-      <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('cn')">🇨🇳 国内</button>
-        <button class="tab-btn" onclick="switchTab('intl')">🌍 国际</button>
-      </div>
+    <h1>AI that writes<br><span class="hl">listings that sell.</span></h1>
+    <p class="lead">Stop spending hours on product copy. Our AI optimizes your titles, bullet points, and keywords in seconds — for Amazon, eBay, Etsy, and more.</p>
 
-      <div class="tab-panel active" id="panel-cn">
-        <div class="qr-wrapper">
-          <div class="qr-item"><img src="alipay-qr.jpg" alt="支付宝"><div class="qr-label" style="color:var(--alipay)">支付宝</div></div>
-          <div class="qr-item"><img src="wechat-qr.jpg" alt="微信"><div class="qr-label" style="color:var(--wechat)">微信支付</div></div>
-        </div>
-        <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:12px;">扫码支付 ¥65</p>
-        <div class="input-group"><label>📧 邮箱</label><input type="email" id="cnEmail" placeholder="your@email.com"></div>
-        <button class="btn btn-gold" onclick="genCN()">🎫 获取许可证</button>
-      </div>
-
-      <div class="tab-panel" id="panel-intl">
-        <p style="text-align:center;font-size:14px;color:var(--text2);margin:8px 0;">信用卡支付</p>
-        <a href="#" id="stripeLink" class="stripe-btn">💳 Pay $9 with Card</a>
-        <div class="divider">或 PayPal</div>
-        <p style="text-align:center;font-size:14px;font-weight:600;">sellify.ai@proton.me</p>
-        <div class="input-group"><label>📧 Email</label><input type="email" id="intlEmail" placeholder="your@email.com"></div>
-        <button class="btn btn-primary" onclick="genIntl()">🎫 Get License Key</button>
-      </div>
-
-      <div class="result-box" id="resultBox">
-        <p style="font-size:12px;color:var(--text2);">🔑 Pro 许可证</p>
-        <div class="key-text" id="keyDisplay"></div>
-        <button class="btn btn-success" onclick="copyKey()" style="margin-top:8px;">📋 一键复制</button>
-        <div class="steps">
-          <p><span>1</span> 复制密钥</p><p><span>2</span> 扩展设置 → License Key</p><p><span>3</span> 粘贴 → Activate</p><p><span>4</span> ✅ Pro 已激活！</p>
-        </div>
-      </div>
-      <p class="footer-note">🔐 付款后立即获取 · 永久有效</p>
+    <div class="benefits">
+      <div class="b"><div class="check">✓</div><div><strong>Listing Optimizer</strong>AI rewrites titles, bullets & descriptions for higher conversion</div></div>
+      <div class="b"><div class="check">✓</div><div><strong>Review Analyzer</strong>Find gaps in competitor reviews and exploit them</div></div>
+      <div class="b"><div class="check">✓</div><div><strong>Keyword Engine</strong>Generate high-intent search terms that rank on Amazon</div></div>
+      <div class="b"><div class="check">✓</div><div><strong>Ad Copy Generator</strong>Facebook, TikTok & email marketing copy in one click</div></div>
     </div>
 
+    <div class="trust">
+      <div class="avatars"><span>👤</span><span>👤</span><span>👤</span></div>
+      <span>Trusted by 200+ e-commerce sellers worldwide</span>
+    </div>
   </div>
 
-  <script>
-    const SECRET = 'sellify-ai-pro-secret-key-2026';
-    async function genKey(email) {
-      const data = email.trim().toLowerCase() + ':' + SECRET;
-      const hb = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
-      const ha = Array.from(new Uint8Array(hb));
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let k = '';
-      for (let i = 0; i < 20; i++) k += chars[ha[i % ha.length] % chars.length];
-      return 'SELL-' + k.substring(0,4) + '-' + k.substring(4,8) + '-' + k.substring(8,12) + '-' + k.substring(12,16);
-    }
-    function showKey(key) {
-      document.getElementById('keyDisplay').textContent = key;
-      document.getElementById('resultBox').style.display = 'block';
-      document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
-    }
-    async function genCN() {
-      const e = document.getElementById('cnEmail').value.trim();
-      if (!e.includes('@')) { alert('请输入有效邮箱'); return; }
-      showKey(await genKey(e));
-    }
-    async function genIntl() {
-      const e = document.getElementById('intlEmail').value.trim();
-      if (!e.includes('@')) { alert('Enter a valid email'); return; }
-      showKey(await genKey(e));
-    }
-    function copyKey() {
-      const k = document.getElementById('keyDisplay').textContent;
-      navigator.clipboard.writeText(k).then(() => {
-        const b = event.target; b.textContent = '✅ 已复制！'; setTimeout(() => b.textContent = '📋 一键复制', 2000);
-      });
-    }
-    function switchTab(t) {
-      document.querySelectorAll('.tab-btn,.tab-panel').forEach(e => e.classList.remove('active'));
-      document.getElementById('panel-' + t).classList.add('active');
-      document.querySelector('.tab-btn:nth-child(' + (t === 'cn' ? '1' : '2') + ')').classList.add('active');
-    }
-    document.getElementById('stripeLink').href = localStorage.getItem('sellify_stripe_url') || '#';
-  </script>
+  <!-- Right -->
+  <div class="panel">
+    <div class="card">
+      <h3>Upgrade to Pro</h3>
+
+      <div class="tab-row">
+        <button class="on" onclick="switchTab('cn')">🇨🇳 China</button>
+        <button onclick="switchTab('intl')">🌍 Global</button>
+      </div>
+
+      <!-- China -->
+      <div class="tab-content on" id="tab-cn">
+        <div class="price">
+          <div><span class="old">¥199</span><span class="tag">LIMITED 67% OFF</span></div>
+          <div class="big">¥65<sub> lifetime</sub></div>
+        </div>
+        <div class="qr-row">
+          <div class="qr"><img src="alipay-qr.jpg" alt=""><div class="name" style="color:#1677ff">Alipay</div></div>
+          <div class="qr"><img src="wechat-qr.jpg" alt=""><div class="name" style="color:#07c160">WeChat</div></div>
+        </div>
+        <div class="field"><label>Email</label><input type="email" id="cnEmail" placeholder="you@email.com"></div>
+        <button class="btn btn-s" onclick="gen('cnEmail')">Get License Key</button>
+      </div>
+
+      <!-- Global -->
+      <div class="tab-content" id="tab-intl">
+        <div class="price"><div class="big">$9<sub> lifetime</sub></div></div>
+        <a href="#" id="stripeLink" class="stripe-btn">💳 Pay $9 with Card</a>
+        <div class="divider">or</div>
+        <div class="paypal-row">PayPal <code>sellify.ai@proton.me</code></div>
+        <div class="field"><label>Email</label><input type="email" id="intlEmail" placeholder="you@email.com"></div>
+        <button class="btn btn-s" onclick="gen('intlEmail')">Get License Key</button>
+      </div>
+
+      <!-- Result -->
+      <div class="result" id="result">
+        <div style="font-size:11px;color:var(--c-text-muted);text-transform:uppercase;letter-spacing:1px;">License Key</div>
+        <div class="key" id="keyDisplay"></div>
+        <button class="btn btn-w" onclick="copyKey()" style="margin-top:12px;">Copy to Clipboard</button>
+        <div class="steps">
+          <p><span>1</span> Copy the key above</p>
+          <p><span>2</span> Open extension → Settings</p>
+          <p><span>3</span> Paste → Activate → Done</p>
+        </div>
+      </div>
+
+      <div class="footer-note">Instant delivery · Lifetime access · 30-day refund</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const S = 'sellify-ai-2026';
+  async function gk(e){ const d=e.trim().toLowerCase()+':'+S; const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(d)); const a=Array.from(new Uint8Array(h)); const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let k=''; for(let i=0;i<20;i++) k+=c[a[i%a.length]%c.length]; return 'SELL-'+k.slice(0,4)+'-'+k.slice(4,8)+'-'+k.slice(8,12)+'-'+k.slice(12,16); }
+
+  function show(k){ document.getElementById('keyDisplay').textContent=k; document.getElementById('result').style.display='block'; document.getElementById('result').scrollIntoView({behavior:'smooth'}); }
+
+  async function gen(id){ const e=document.getElementById(id).value.trim(); if(!e.includes('@')){alert('Enter a valid email');return;} show(await gk(e)); }
+
+  function copyKey(){ const k=document.getElementById('keyDisplay').textContent; navigator.clipboard.writeText(k).then(()=>{ const b=document.querySelector('.btn-w'); b.textContent='Copied!'; setTimeout(()=>b.textContent='Copy to Clipboard',2000); }); }
+
+  function switchTab(t){ document.querySelectorAll('.tab-row button,.tab-content').forEach(e=>e.classList.remove('on')); document.getElementById('tab-'+t).classList.add('on'); document.querySelector('.tab-row button:nth-child('+(t==='cn'?1:2)+')').classList.add('on'); }
+
+  document.getElementById('stripeLink').href=localStorage.getItem('sellify_stripe_url')||'#';
+</script>
 </body>
 </html>
