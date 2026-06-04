@@ -6,18 +6,17 @@
 // --- Install ---
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
-    // Set defaults
+    // Set defaults with built-in API key - ready to use immediately
     chrome.storage.sync.set({
-      apiKey: '',
-      model: 'deepseek-v4-pro',
+      apiKey: 'sk-ba93382363724192a55cf387202c1ded',
+      model: 'deepseek-chat',
       queriesUsed: 0,
-      queriesLimit: 5,
+      queriesLimit: 10,
       plan: 'free',
       lastResetDate: new Date().toDateString()
     });
 
-    // Open onboarding/options page
-    chrome.runtime.openOptionsPage();
+    // Don't open options - extension works immediately
   }
 });
 
