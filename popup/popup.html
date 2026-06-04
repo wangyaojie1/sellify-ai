@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sellify AI</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <h1>Sellify AI</h1>
+      </div>
+      <div class="header-actions">
+        <span id="planBadge" class="badge badge-free">FREE</span>
+        <button id="settingsBtn" class="btn-icon" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Quota Bar -->
+    <div class="quota-bar">
+      <div class="quota-info">
+        <span id="quotaText">0/5 queries today</span>
+      </div>
+      <div class="quota-progress">
+        <div id="quotaFill" class="quota-fill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Platform Detection -->
+    <div id="platformBar" class="platform-bar" style="display: none;">
+      <span id="platformIcon"></span>
+      <span id="platformName"></span>
+      <button id="scrapeBtn" class="btn btn-sm">📥 Scan Product</button>
+    </div>
+
+    <!-- Quick Actions -->
+    <nav class="nav-tabs">
+      <button class="tab active" data-tab="optimize">🎯 Optimize</button>
+      <button class="tab" data-tab="reviews">📊 Reviews</button>
+      <button class="tab" data-tab="keywords">🔑 Keywords</button>
+      <button class="tab" data-tab="marketing">📢 Marketing</button>
+    </nav>
+
+    <!-- Tab Content -->
+    <main class="main-content">
+      <!-- Optimize Tab -->
+      <section id="tab-optimize" class="tab-content active">
+        <div class="card">
+          <label>Product Title</label>
+          <textarea id="optTitle" rows="2" placeholder="Enter or scan product title..."></textarea>
+        </div>
+        <div class="card">
+          <label>Description / Bullet Points</label>
+          <textarea id="optDesc" rows="3" placeholder="Product description and key features..."></textarea>
+        </div>
+        <div class="card">
+          <label>Category</label>
+          <input type="text" id="optCategory" placeholder="e.g., Home & Kitchen > Kitchen Gadgets" />
+        </div>
+        <button id="optimizeBtn" class="btn btn-primary btn-full">
+          ✨ Generate Optimization Report
+        </button>
+        <div id="optimizeResult" class="result-box" style="display:none;"></div>
+      </section>
+
+      <!-- Reviews Tab -->
+      <section id="tab-reviews" class="tab-content">
+        <div class="card">
+          <label>Paste Competitor Reviews</label>
+          <textarea id="reviewInput" rows="4" placeholder="Paste reviews here (one per line or JSON format)..."></textarea>
+        </div>
+        <div class="card">
+          <label>Product Context (optional)</label>
+          <input type="text" id="reviewContext" placeholder="e.g., Wireless Bluetooth Headphones" />
+        </div>
+        <button id="analyzeReviewsBtn" class="btn btn-primary btn-full">
+          🔍 Analyze Reviews
+        </button>
+        <div id="reviewResult" class="result-box" style="display:none;"></div>
+      </section>
+
+      <!-- Keywords Tab -->
+      <section id="tab-keywords" class="tab-content">
+        <div class="card">
+          <label>Product Info</label>
+          <textarea id="kwProduct" rows="2" placeholder="Describe your product (title, features, target audience)..."></textarea>
+        </div>
+        <div class="card">
+          <label>Platform</label>
+          <select id="kwPlatform">
+            <option value="amazon">Amazon</option>
+            <option value="ebay">eBay</option>
+            <option value="etsy">Etsy</option>
+            <option value="shopify">Shopify</option>
+          </select>
+        </div>
+        <button id="keywordBtn" class="btn btn-primary btn-full">
+          🎯 Generate Keywords
+        </button>
+        <div id="keywordResult" class="result-box" style="display:none;"></div>
+      </section>
+
+      <!-- Marketing Tab -->
+      <section id="tab-marketing" class="tab-content">
+        <div class="card">
+          <label>Product Info</label>
+          <textarea id="mktProduct" rows="2" placeholder="Describe your product..."></textarea>
+        </div>
+        <div class="card">
+          <label>Target Customer & Pain Point</label>
+          <input type="text" id="mktAudience" placeholder="e.g., Busy moms who need quick meal prep" />
+        </div>
+        <div class="card">
+          <label>Ad Platform</label>
+          <select id="mktPlatform">
+            <option value="facebook">Facebook/Instagram Ads</option>
+            <option value="tiktok">TikTok</option>
+            <option value="google">Google Ads</option>
+            <option value="email">Email Marketing</option>
+          </select>
+        </div>
+        <button id="marketingBtn" class="btn btn-primary btn-full">
+          📝 Generate Marketing Copy
+        </button>
+        <div id="marketingResult" class="result-box" style="display:none;"></div>
+      </section>
+    </main>
+
+    <!-- Upgrade Banner -->
+    <div id="upgradeBanner" class="upgrade-banner" style="display: none;">
+      <div class="upgrade-text">
+        <strong>🚀 Upgrade to Pro</strong>
+        <span>$9/mo — Unlimited queries, all features</span>
+      </div>
+      <button id="upgradeBtn" class="btn btn-gold">Upgrade</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Sellify AI v1.0</span>
+      <span>|</span>
+      <a href="#" id="openOptions">API Settings</a>
+    </footer>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading" class="loading-overlay" style="display: none;">
+    <div class="spinner"></div>
+    <span>AI is working...</span>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="../lib/sellify-ai.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

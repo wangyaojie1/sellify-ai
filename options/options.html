@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sellify AI - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <div>
+          <h1>Sellify AI</h1>
+          <p class="subtitle">Settings & API Configuration</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- API Configuration -->
+      <section class="section">
+        <h2>🔑 API Configuration</h2>
+        <div class="card">
+          <label for="apiKey">DeepSeek API Key</label>
+          <div class="input-row">
+            <input type="password" id="apiKey" placeholder="sk-..." autocomplete="off" />
+            <button id="toggleKey" class="btn-icon" title="Show/Hide">👁️</button>
+          </div>
+          <p class="help">
+            Get your API key from <a href="https://platform.deepseek.com/api_keys" target="_blank">platform.deepseek.com</a>
+          </p>
+        </div>
+
+        <div class="card">
+          <label for="modelSelect">Model</label>
+          <select id="modelSelect">
+            <option value="deepseek-v4-pro">DeepSeek V4 Pro (Recommended)</option>
+            <option value="deepseek-v4-flash">DeepSeek V4 Flash (Faster)</option>
+            <option value="deepseek-chat">DeepSeek Chat</option>
+          </select>
+        </div>
+
+        <button id="saveSettings" class="btn btn-primary">💾 Save Settings</button>
+        <button id="testConnection" class="btn btn-secondary">🔌 Test Connection</button>
+        <div id="testResult" class="test-result" style="display:none;"></div>
+      </section>
+
+      <!-- License Activation -->
+      <section class="section">
+        <h2>🔐 Activate Pro License</h2>
+        <div class="card">
+          <label for="licenseKey">License Key</label>
+          <div class="input-row">
+            <input type="text" id="licenseKey" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" autocomplete="off" />
+            <button id="activateLicense" class="btn btn-primary">Activate</button>
+          </div>
+          <p class="help" id="licenseStatus"></p>
+        </div>
+      </section>
+
+      <!-- Plan -->
+      <section class="section">
+        <h2>💳 Plan & Billing</h2>
+        <div class="plan-cards">
+          <div class="plan-card" id="planFree">
+            <div class="plan-header">
+              <h3>Free</h3>
+              <span class="plan-price">$0</span>
+            </div>
+            <ul>
+              <li>5 AI queries / day</li>
+              <li>All features included</li>
+              <li>Basic support</li>
+            </ul>
+            <button class="btn btn-outline" disabled>Current Plan</button>
+          </div>
+          <div class="plan-card featured" id="planPro">
+            <div class="plan-badge">RECOMMENDED</div>
+            <div class="plan-header">
+              <h3>Pro</h3>
+              <span class="plan-price">$9<span>/mo</span></span>
+            </div>
+            <ul>
+              <li>Unlimited AI queries</li>
+              <li>All features included</li>
+              <li>Priority support</li>
+              <li>Early access to new features</li>
+            </ul>
+            <button id="upgradeToPro" class="btn btn-gold">Upgrade to Pro</button>
+          </div>
+        </div>
+        <p class="help">30-day money-back guarantee. Cancel anytime.</p>
+      </section>
+
+      <!-- Stats -->
+      <section class="section">
+        <h2>📊 Usage Stats</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value" id="statQueries">0</span>
+            <span class="stat-label">Queries Today</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value" id="statPlan">Free</span>
+            <span class="stat-label">Current Plan</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">v1.0.0</span>
+            <span class="stat-label">Version</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Sellify AI — Built for e-commerce sellers who want better listings, more sales.</p>
+      <p class="footer-links">
+        <a href="mailto:support@sellify.ai">Support</a> |
+        <a href="#">Privacy Policy</a> |
+        <a href="#">Terms of Service</a>
+      </p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="../lib/sellify-ai.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+node_modules/
+test/.test-profile*/
+test/.test-profile*/
+test/.test-final/
+test/.demo-profile/
+test/.screenshot-profile/
+test/screenshots/
+*.zip
+.env
+.DS_Store
+Thumbs.db

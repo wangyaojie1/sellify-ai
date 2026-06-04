@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sellify AI - Upgrade to Pro</title>
+  <style>
+    :root {
+      --bg: #0f1117; --surface: #1a1d27; --border: #2e3347;
+      --text: #e8ecf1; --text-muted: #8b91a8;
+      --primary: #6366f1; --gold: #f59e0b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px;
+    }
+    .checkout-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px; max-width: 420px; width: 100%;
+      text-align: center;
+    }
+    .logo { font-size: 48px; margin-bottom: 8px; }
+    h1 { font-size: 24px; margin-bottom: 4px; }
+    .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .price-block { margin: 24px 0; }
+    .price {
+      font-size: 48px; font-weight: 700; color: var(--gold);
+    }
+    .price span { font-size: 18px; font-weight: 400; color: var(--text-muted); }
+    .features { text-align: left; margin: 20px 0; }
+    .features li {
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px; list-style: none;
+    }
+    .features li::before { content: '✓ '; color: #10b981; font-weight: 700; }
+    .btn {
+      display: block; width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; border: none; border-radius: 8px;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; text-decoration: none; margin-top: 20px;
+    }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .guarantee { font-size: 12px; color: var(--text-muted); margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="checkout-card">
+    <div class="logo">⚡</div>
+    <h1>Upgrade to Sellify AI Pro</h1>
+    <p class="subtitle">Unlimited AI queries for your e-commerce business</p>
+
+    <div class="price-block">
+      <div class="price">$9<span>/month</span></div>
+    </div>
+
+    <ul class="features">
+      <li>Unlimited AI listing optimizations</li>
+      <li>Unlimited review analysis</li>
+      <li>Unlimited keyword research</li>
+      <li>Unlimited marketing copy generation</li>
+      <li>Priority support</li>
+      <li>Early access to new features</li>
+    </ul>
+
+    <!-- Replace with your Stripe Checkout link -->
+    <a href="#" id="stripeCheckout" class="btn">🚀 Upgrade to Pro</a>
+
+    <p class="guarantee">🔒 30-day money-back guarantee. Cancel anytime.</p>
+  </div>
+
+  <script>
+    // Configure this with your actual Stripe Payment Link
+    const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_LINK_HERE';
+
+    document.getElementById('stripeCheckout').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (STRIPE_PAYMENT_LINK.includes('YOUR_LINK_HERE')) {
+        alert('Payment system ready to activate.\n\n1. Create a Stripe account at stripe.com\n2. Create a Payment Link for $9/month\n3. Replace STRIPE_PAYMENT_LINK in checkout.html');
+      } else {
+        window.open(STRIPE_PAYMENT_LINK, '_blank');
+      }
+    });
+  </script>
+</body>
+</html>

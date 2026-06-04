@@ -1,0 +1,17 @@
+/**
+ * Sellify AI - Content Styles
+ * Styles for the floating button injected into e-commerce pages.
+ */
+
+#sellify-floating-btn {
+  animation: sellify-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sellify-pulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4); }
+  50% { box-shadow: 0 4px 24px rgba(99, 102, 241, 0.7); }
+}
+
+#sellify-floating-btn:hover {
+  animation: none;
+}
