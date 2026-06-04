@@ -168,7 +168,7 @@ async function handleMarketing() {
 
 // --- Upgrade ---
 async function handleUpgrade() {
-  chrome.tabs.create({ url: 'file:///C:/Users/leovo/ecom-ai-assistant/payment/index.html' });
+  chrome.tabs.create({ url: 'https://github.com/wangyaojie1/sellify-ai/releases' });
 }
 
 // --- Helpers ---
