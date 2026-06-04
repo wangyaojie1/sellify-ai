@@ -164,3 +164,11 @@ Host the checkout page on any static host:
 ---
 
 **Built in 1 day. Monetized from day 1. 10x token cost from day 1.**
+
+## 🌐 Live URLs (China-accessible)
+
+| Page | URL |
+|------|-----|
+| Landing Page | https://cdn.jsdelivr.net/gh/wangyaojie1/sellify-ai@master/docs/index.html |
+| Privacy Policy | https://cdn.jsdelivr.net/gh/wangyaojie1/sellify-ai@master/docs/privacy-policy.html |
+| GitHub Repo | https://github.com/wangyaojie1/sellify-ai |

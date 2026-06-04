@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sellify AI — AI-Powered Listing Optimizer for E-Commerce Sellers</title>
+  <meta name="description" content="Boost your Amazon, eBay, and Etsy sales with AI-optimized product listings. Free Chrome extension.">
+  <style>
+    :root { --bg: #0f1117; --surface: #1a1d27; --border: #2e3347; --text: #e8ecf1; --muted: #8b91a8; --primary: #6366f1; --primary-glow: #8b5cf6; --gold: #f59e0b; --success: #10b981; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero { text-align: center; padding: 100px 0 60px; }
+    .hero-badge { display: inline-block; padding: 6px 16px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); border-radius: 100px; font-size: 13px; color: var(--primary); margin-bottom: 24px; }
+    .hero h1 { font-size: 52px; font-weight: 800; letter-spacing: -1px; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 span { background: linear-gradient(135deg, var(--primary), var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 18px; color: var(--muted); max-width: 600px; margin: 0 auto 32px; }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-glow)); color: white; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.35); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--primary); }
+
+    /* Features */
+    .features { padding: 60px 0; }
+    .features h2 { text-align: center; font-size: 32px; margin-bottom: 48px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; transition: all 0.2s; }
+    .feature-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .feature-icon { font-size: 32px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 17px; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--muted); }
+
+    /* Pricing */
+    .pricing { padding: 60px 0; text-align: center; }
+    .pricing h2 { font-size: 32px; margin-bottom: 48px; }
+    .pricing-cards { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+    .pricing-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 300px; text-align: left; }
+    .pricing-card.featured { border-color: var(--primary); background: linear-gradient(135deg, #1a1a2e, #1d1a2e); position: relative; }
+    .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 100px; }
+    .pricing-price { font-size: 40px; font-weight: 800; color: var(--gold); margin: 16px 0; }
+    .pricing-price span { font-size: 16px; font-weight: 400; color: var(--muted); }
+    .pricing-card ul { list-style: none; margin: 20px 0; }
+    .pricing-card li { padding: 6px 0; font-size: 14px; color: var(--muted); }
+    .pricing-card li::before { content: '✓ '; color: var(--success); font-weight: 700; }
+
+    /* CTA */
+    .cta { text-align: center; padding: 80px 0; }
+    .cta h2 { font-size: 36px; margin-bottom: 16px; }
+    .cta p { color: var(--muted); margin-bottom: 32px; font-size: 17px; }
+
+    /* Footer */
+    footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+    footer a { color: var(--primary); text-decoration: none; margin: 0 8px; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 34px; }
+      .hero p { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">⚡ Free Chrome Extension</div>
+      <h1>AI-Powered <span>Listing Optimizer</span> for E-Commerce Sellers</h1>
+      <p>Stop guessing what sells. Optimize your Amazon, eBay, and Etsy listings with AI in 30 seconds. Better titles, smarter keywords, more sales.</p>
+      <div class="hero-buttons">
+        <a href="https://chrome.google.com/webstore" class="btn btn-primary">⚡ Add to Chrome — Free</a>
+        <a href="#features" class="btn btn-outline">See Features ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2>Everything You Need to Sell More</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Listing Optimizer</h3>
+          <p>AI rewrites your titles, bullet points, and descriptions to rank higher and convert better.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Review Analyzer</h3>
+          <p>Paste competitor reviews. AI finds customer pain points you can exploit in your own listing.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔑</div>
+          <h3>Keyword Generator</h3>
+          <p>Get high-intent keywords, long-tail phrases, and backend search terms — organized by search volume.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📢</div>
+          <h3>Marketing Copy</h3>
+          <p>Generate Facebook ads, TikTok captions, and email subject lines that actually convert.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>One-Click Scan</h3>
+          <p>Navigate to any product page. One click extracts the listing data. AI does the rest.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>100% Private</h3>
+          <p>Your data stays on your device. No tracking, no analytics, no selling your data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="container">
+      <h2>Simple, Fair Pricing</h2>
+      <div class="pricing-cards">
+        <div class="pricing-card">
+          <h3>Free</h3>
+          <div class="pricing-price">$0</div>
+          <ul>
+            <li>5 AI queries per day</li>
+            <li>All features unlocked</li>
+            <li>No credit card required</li>
+            <li>Works on all platforms</li>
+          </ul>
+          <a href="https://chrome.google.com/webstore" class="btn btn-outline" style="width:100%;justify-content:center;">Get Started Free</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">MOST POPULAR</div>
+          <h3>Pro</h3>
+          <div class="pricing-price">$9<span>/month</span></div>
+          <ul>
+            <li>Unlimited AI queries</li>
+            <li>All features unlocked</li>
+            <li>Priority email support</li>
+            <li>Early access to new features</li>
+            <li>30-day money-back guarantee</li>
+          </ul>
+          <a href="#" class="btn btn-primary" style="width:100%;justify-content:center;">Upgrade to Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Boost Your Sales?</h2>
+      <p>Install the free Chrome extension. Optimize your first listing in 30 seconds.<br>Join 200+ sellers already using Sellify AI.</p>
+      <a href="https://chrome.google.com/webstore" class="btn btn-primary">⚡ Add to Chrome — It's Free</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <a href="privacy-policy.html">Privacy Policy</a> |
+      <a href="mailto:support@sellify.ai">Support</a> |
+      <span>© 2026 Sellify AI</span>
+    </div>
+  </footer>
+</body>
+</html>
