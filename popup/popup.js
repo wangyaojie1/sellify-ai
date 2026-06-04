@@ -1,9 +1,7 @@
 /**
- * Sellify AI - Popup UI Logic
+ * Sellify AI — Popup Logic (Premium Edition)
  */
 
-// --- State ---
-let currentTab = 'optimize';
 let currentPlatform = null;
 let scrapedData = null;
 
@@ -21,31 +19,27 @@ async function detectPlatform() {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = tab.url || '';
-
     const bar = document.getElementById('platformBar');
-    const icon = document.getElementById('platformIcon');
-    const name = document.getElementById('platformName');
+    const label = document.getElementById('platformLabel');
 
     if (url.includes('amazon')) {
       currentPlatform = 'amazon';
-      icon.textContent = '📦'; name.textContent = 'Amazon Listing Detected';
+      label.textContent = 'Amazon Listing Detected';
       bar.style.display = 'flex';
     } else if (url.includes('ebay')) {
       currentPlatform = 'ebay';
-      icon.textContent = '🛒'; name.textContent = 'eBay Listing Detected';
+      label.textContent = 'eBay Listing Detected';
       bar.style.display = 'flex';
     } else if (url.includes('etsy')) {
       currentPlatform = 'etsy';
-      icon.textContent = '🎨'; name.textContent = 'Etsy Listing Detected';
+      label.textContent = 'Etsy Listing Detected';
       bar.style.display = 'flex';
     } else if (url.includes('aliexpress')) {
       currentPlatform = 'aliexpress';
-      icon.textContent = '🌏'; name.textContent = 'AliExpress Listing Detected';
+      label.textContent = 'AliExpress Listing Detected';
       bar.style.display = 'flex';
     }
-  } catch (e) {
-    // Not on a supported page
-  }
+  } catch(e) {}
 }
 
 // --- Tab Switching ---
@@ -53,15 +47,14 @@ function setupTabs() {
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       tab.classList.add('active');
-      document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-      currentTab = tab.dataset.tab;
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
     });
   });
 }
 
-// --- Button Wiring ---
+// --- Buttons ---
 function setupButtons() {
   document.getElementById('scrapeBtn')?.addEventListener('click', handleScrape);
   document.getElementById('optimizeBtn')?.addEventListener('click', handleOptimize);
@@ -69,230 +62,159 @@ function setupButtons() {
   document.getElementById('keywordBtn')?.addEventListener('click', handleKeywords);
   document.getElementById('marketingBtn')?.addEventListener('click', handleMarketing);
   document.getElementById('upgradeBtn')?.addEventListener('click', handleUpgrade);
-  document.getElementById('settingsBtn')?.addEventListener('click', () => {
-    chrome.runtime.openOptionsPage();
-  });
-  document.getElementById('openOptions')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    chrome.runtime.openOptionsPage();
-  });
+  document.getElementById('settingsBtn')?.addEventListener('click', () => chrome.runtime.openOptionsPage());
+  document.getElementById('openOptions')?.addEventListener('click', (e) => { e.preventDefault(); chrome.runtime.openOptionsPage(); });
 }
 
-// --- Scrape Product ---
+// --- Scrape ---
 async function handleScrape() {
-  showLoading(true);
+  showLoading('loading', true);
   try {
     scrapedData = await SellifyAI.scrapeProductFromPage(currentPlatform);
-
-    // Auto-fill the optimize tab
     document.getElementById('optTitle').value = scrapedData.title || '';
-    document.getElementById('optDesc').value = [
-      ...(scrapedData.bullets || []),
-      scrapedData.description || ''
-    ].filter(Boolean).join('\n');
+    document.getElementById('optDesc').value = [...(scrapedData.bullets || []), scrapedData.description || ''].filter(Boolean).join('\n');
     document.getElementById('optCategory').value = scrapedData.category || '';
-
-    // Switch to optimize tab
     document.querySelector('.tab[data-tab="optimize"]').click();
-
-    showToast('Product data scanned! ✓', 'success');
-  } catch (e) {
-    showToast('Failed to scan product: ' + e.message, 'error');
-  }
-  showLoading(false);
+    toast('Product data loaded!', 'ok');
+  } catch(e) { toast(e.message, 'err'); }
+  showLoading('loading', false);
 }
 
-// --- Optimize Listing ---
+// --- Optimize ---
 async function handleOptimize() {
   const title = document.getElementById('optTitle').value.trim();
   const desc = document.getElementById('optDesc').value.trim();
   const category = document.getElementById('optCategory').value.trim();
+  if (!title) { toast('Please enter a product title', 'err'); return; }
 
-  if (!title) { showToast('Please enter a product title', 'error'); return; }
+  showLoading('loading', true);
+  document.getElementById('optimizeBtn').disabled = true;
+  document.getElementById('optimizeBtn').textContent = 'Analyzing...';
 
-  showLoading(true);
   try {
     const result = await SellifyAI.optimizeListing({
-      title,
-      description: desc,
-      category,
+      title, description: desc, category,
       bullets: desc.split('\n').filter(l => l.trim()),
       price: scrapedData?.price || ''
     });
 
-    const resultBox = document.getElementById('optimizeResult');
-    resultBox.innerHTML = formatMarkdown(result);
-    resultBox.style.display = 'block';
-    resultBox.scrollIntoView({ behavior: 'smooth' });
-    showToast('Optimization complete! ✨', 'success');
-  } catch (e) {
-    showToast(e.message, 'error');
-  }
-  showLoading(false);
+    document.getElementById('optimizeResultBody').innerHTML = formatMarkdown(result);
+    document.getElementById('optimizeResult').style.display = 'block';
+    document.getElementById('optimizeResult').scrollIntoView({ behavior: 'smooth' });
+    toast('Optimization complete!', 'ok');
+  } catch(e) { toast(e.message, 'err'); }
+
+  showLoading('loading', false);
+  document.getElementById('optimizeBtn').disabled = false;
+  document.getElementById('optimizeBtn').textContent = 'Analyze & Optimize Listing';
 }
 
-// --- Analyze Reviews ---
+// --- Review Analysis ---
 async function handleReviewAnalysis() {
-  const rawReviews = document.getElementById('reviewInput').value.trim();
-  const context = document.getElementById('reviewContext').value.trim();
+  const raw = document.getElementById('reviewInput').value.trim();
+  const ctx = document.getElementById('reviewContext').value.trim();
+  if (!raw) { toast('Please paste some reviews', 'err'); return; }
 
-  if (!rawReviews) { showToast('Please paste some reviews', 'error'); return; }
+  const reviews = raw.split('\n').filter(l => l.trim()).map(line => {
+    const m = line.match(/^(\d[.\d]?)\s*[★⭐]?\s*[:\-]?\s*(.+)/);
+    return m ? { rating: parseFloat(m[1]), body: m[2] } : { rating: 0, body: line };
+  });
 
-  // Parse reviews - try to extract rating and body
-  let reviews = [];
-  const lines = rawReviews.split('\n').filter(l => l.trim());
-  for (const line of lines) {
-    // Try "Rating: Body" or "★ Body" format
-    const match = line.match(/^(\d[.\d]?)\s*[★⭐]?\s*[:\-]?\s*(.+)/);
-    if (match) {
-      reviews.push({ rating: parseFloat(match[1]), body: match[2] });
-    } else {
-      reviews.push({ rating: 0, body: line });
-    }
-  }
-
-  if (reviews.length === 0) { showToast('No reviews found to analyze', 'error'); return; }
-
-  showLoading(true);
+  showLoading('loadingReviews', true);
   try {
-    const result = await SellifyAI.analyzeReviews(reviews, context);
-    const resultBox = document.getElementById('reviewResult');
-    resultBox.innerHTML = formatMarkdown(result);
-    resultBox.style.display = 'block';
-    resultBox.scrollIntoView({ behavior: 'smooth' });
-    showToast('Review analysis complete! 📊', 'success');
-  } catch (e) {
-    showToast(e.message, 'error');
-  }
-  showLoading(false);
+    const result = await SellifyAI.analyzeReviews(reviews, ctx);
+    document.getElementById('reviewResultBody').innerHTML = formatMarkdown(result);
+    document.getElementById('reviewResult').style.display = 'block';
+    document.getElementById('reviewResult').scrollIntoView({ behavior: 'smooth' });
+    toast('Review analysis complete!', 'ok');
+  } catch(e) { toast(e.message, 'err'); }
+  showLoading('loadingReviews', false);
 }
 
-// --- Generate Keywords ---
+// --- Keywords ---
 async function handleKeywords() {
   const product = document.getElementById('kwProduct').value.trim();
   const platform = document.getElementById('kwPlatform').value;
+  if (!product) { toast('Please describe your product', 'err'); return; }
 
-  if (!product) { showToast('Please describe your product', 'error'); return; }
-
-  showLoading(true);
+  showLoading('loadingKeywords', true);
   try {
-    const result = await SellifyAI.generateKeywords({
-      title: product,
-      category: '',
-      audience: '',
-      features: '',
-      price: ''
-    }, platform);
-
-    const resultBox = document.getElementById('keywordResult');
-    resultBox.innerHTML = formatMarkdown(result);
-    resultBox.style.display = 'block';
-    resultBox.scrollIntoView({ behavior: 'smooth' });
-    showToast('Keywords generated! 🔑', 'success');
-  } catch (e) {
-    showToast(e.message, 'error');
-  }
-  showLoading(false);
+    const result = await SellifyAI.generateKeywords({ title: product, category: '', audience: '', features: '', price: '' }, platform);
+    document.getElementById('keywordResultBody').innerHTML = formatMarkdown(result);
+    document.getElementById('keywordResult').style.display = 'block';
+    document.getElementById('keywordResult').scrollIntoView({ behavior: 'smooth' });
+    toast('Keywords generated!', 'ok');
+  } catch(e) { toast(e.message, 'err'); }
+  showLoading('loadingKeywords', false);
 }
 
-// --- Generate Marketing Copy ---
+// --- Marketing ---
 async function handleMarketing() {
   const product = document.getElementById('mktProduct').value.trim();
   const audience = document.getElementById('mktAudience').value.trim();
   const platform = document.getElementById('mktPlatform').value;
+  if (!product) { toast('Please describe your product', 'err'); return; }
 
-  if (!product) { showToast('Please describe your product', 'error'); return; }
-
-  showLoading(true);
+  showLoading('loadingMarketing', true);
   try {
-    const result = await SellifyAI.generateMarketingCopy({
-      title: product,
-      audience: audience,
-      mainBenefit: '',
-      painPoint: '',
-      features: '',
-      price: ''
-    }, platform);
-
-    const resultBox = document.getElementById('marketingResult');
-    resultBox.innerHTML = formatMarkdown(result);
-    resultBox.style.display = 'block';
-    resultBox.scrollIntoView({ behavior: 'smooth' });
-    showToast('Marketing copy ready! 📝', 'success');
-  } catch (e) {
-    showToast(e.message, 'error');
-  }
-  showLoading(false);
+    const result = await SellifyAI.generateMarketingCopy({ title: product, audience, mainBenefit: '', painPoint: '', features: '', price: '' }, platform);
+    document.getElementById('marketingResultBody').innerHTML = formatMarkdown(result);
+    document.getElementById('marketingResult').style.display = 'block';
+    document.getElementById('marketingResult').scrollIntoView({ behavior: 'smooth' });
+    toast('Marketing copy ready!', 'ok');
+  } catch(e) { toast(e.message, 'err'); }
+  showLoading('loadingMarketing', false);
 }
 
 // --- Upgrade ---
 async function handleUpgrade() {
-  // Open the payment page
-  const payUrl = 'https://cdn.jsdelivr.net/gh/wangyaojie1/sellify-ai@master/payment/upgrade-cn.html';
-  chrome.tabs.create({ url: payUrl });
+  chrome.tabs.create({ url: 'file:///C:/Users/leovo/ecom-ai-assistant/payment/index.html' });
 }
 
 // --- Helpers ---
-
 async function updateQuotaUI() {
-  const settings = await SellifyAI.getSettings();
-  const used = settings.queriesUsed;
-  const limit = settings.plan === 'pro' ? Infinity : settings.queriesLimit;
+  const s = await SellifyAI.getSettings();
+  document.getElementById('quotaText').textContent = s.plan === 'pro'
+    ? 'Unlimited'
+    : s.queriesUsed + '/' + s.queriesLimit;
 
-  document.getElementById('quotaText').textContent =
-    settings.plan === 'pro' ? `${used} queries (Unlimited)` : `${used}/${limit} queries today`;
-
-  const pct = settings.plan === 'pro' ? 0 : Math.min(100, (used / limit) * 100);
+  const pct = s.plan === 'pro' ? 0 : Math.min(100, (s.queriesUsed / s.queriesLimit) * 100);
   const fill = document.getElementById('quotaFill');
   fill.style.width = pct + '%';
-  fill.className = 'quota-fill' + (pct >= 80 ? ' danger' : pct >= 60 ? ' warning' : '');
+  fill.className = 'quota-fill' + (pct >= 80 ? ' danger' : pct >= 60 ? ' warn' : '');
 
-  // Plan badge
-  const badge = document.getElementById('planBadge');
-  badge.textContent = settings.plan === 'pro' ? 'PRO' : 'FREE';
-  badge.className = 'badge ' + (settings.plan === 'pro' ? 'badge-pro' : 'badge-free');
+  const pill = document.getElementById('planPill');
+  pill.textContent = s.plan === 'pro' ? 'PRO' : 'FREE';
+  pill.className = 'pill ' + (s.plan === 'pro' ? 'pill-pro' : 'pill-free');
 }
 
 function checkUpgradeBanner() {
   SellifyAI.getSettings().then(s => {
-    document.getElementById('upgradeBanner').style.display =
-      s.plan === 'free' ? 'flex' : 'none';
+    document.getElementById('upgradeBanner').style.display = s.plan === 'free' ? 'flex' : 'none';
   });
 }
 
-function showLoading(show) {
-  document.getElementById('loading').style.display = show ? 'flex' : 'none';
+function showLoading(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = show ? 'block' : 'none';
 }
 
-function showToast(msg, type = '') {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.className = 'toast ' + type + ' show';
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + type + ' show';
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// Simple markdown to HTML formatter
 function formatMarkdown(md) {
   if (!md) return '';
   return md
-    // Headers
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
     .replace(/^## (.+)$/gm, '<h2>$1</h2>')
     .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    // Bold
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // Italic
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Lists
     .replace(/^[-\*] (.+)$/gm, '<li>$1</li>')
     .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
     .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-    // Code
     .replace(/`(.+?)`/g, '<code>$1</code>')
-    // Line breaks
-    .replace(/\n\n/g, '<br><br>')
-    .replace(/\n/g, '<br>');
+    .replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
 }

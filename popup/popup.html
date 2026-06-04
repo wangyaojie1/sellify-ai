@@ -1,162 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellify AI</title>
-  <link rel="stylesheet" href="popup.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sellify AI</title>
+<link rel="stylesheet" href="popup.css">
 </head>
 <body>
-  <div class="app">
-    <!-- Header -->
-    <header class="header">
-      <div class="logo">
-        <span class="logo-icon">⚡</span>
-        <h1>Sellify AI</h1>
-      </div>
-      <div class="header-actions">
-        <span id="planBadge" class="badge badge-free">FREE</span>
-        <button id="settingsBtn" class="btn-icon" title="Settings">⚙️</button>
-      </div>
-    </header>
+<div class="app">
 
-    <!-- Quota Bar -->
-    <div class="quota-bar">
-      <div class="quota-info">
-        <span id="quotaText">0/5 queries today</span>
-      </div>
-      <div class="quota-progress">
-        <div id="quotaFill" class="quota-fill" style="width: 0%"></div>
-      </div>
+  <!-- Header -->
+  <header class="hdr">
+    <div class="hdr-l">
+      <div class="hdr-logo">⚡</div>
+      <div class="hdr-name">Sellify <span>AI</span></div>
     </div>
-
-    <!-- Platform Detection -->
-    <div id="platformBar" class="platform-bar" style="display: none;">
-      <span id="platformIcon"></span>
-      <span id="platformName"></span>
-      <button id="scrapeBtn" class="btn btn-sm">📥 Scan Product</button>
+    <div class="hdr-r">
+      <span id="planPill" class="pill pill-free">Free</span>
+      <button id="settingsBtn" class="btn-icon" title="Settings">⚙</button>
     </div>
+  </header>
 
-    <!-- Quick Actions -->
-    <nav class="nav-tabs">
-      <button class="tab active" data-tab="optimize">🎯 Optimize</button>
-      <button class="tab" data-tab="reviews">📊 Reviews</button>
-      <button class="tab" data-tab="keywords">🔑 Keywords</button>
-      <button class="tab" data-tab="marketing">📢 Marketing</button>
-    </nav>
+  <!-- Status -->
+  <div class="status-bar">
+    <span><span class="dot"></span> AI Ready</span>
+    <span>Daily: <span class="count" id="quotaText">0/10</span> free</span>
+  </div>
+  <div class="quota-progress"><div class="quota-fill" id="quotaFill" style="width:0%"></div></div>
 
-    <!-- Tab Content -->
-    <main class="main-content">
-      <!-- Optimize Tab -->
-      <section id="tab-optimize" class="tab-content active">
-        <div class="card">
-          <label>Product Title</label>
-          <textarea id="optTitle" rows="2" placeholder="Enter or scan product title..."></textarea>
-        </div>
-        <div class="card">
-          <label>Description / Bullet Points</label>
-          <textarea id="optDesc" rows="3" placeholder="Product description and key features..."></textarea>
-        </div>
-        <div class="card">
-          <label>Category</label>
-          <input type="text" id="optCategory" placeholder="e.g., Home & Kitchen > Kitchen Gadgets" />
-        </div>
-        <button id="optimizeBtn" class="btn btn-primary btn-full">
-          ✨ Generate Optimization Report
-        </button>
-        <div id="optimizeResult" class="result-box" style="display:none;"></div>
-      </section>
-
-      <!-- Reviews Tab -->
-      <section id="tab-reviews" class="tab-content">
-        <div class="card">
-          <label>Paste Competitor Reviews</label>
-          <textarea id="reviewInput" rows="4" placeholder="Paste reviews here (one per line or JSON format)..."></textarea>
-        </div>
-        <div class="card">
-          <label>Product Context (optional)</label>
-          <input type="text" id="reviewContext" placeholder="e.g., Wireless Bluetooth Headphones" />
-        </div>
-        <button id="analyzeReviewsBtn" class="btn btn-primary btn-full">
-          🔍 Analyze Reviews
-        </button>
-        <div id="reviewResult" class="result-box" style="display:none;"></div>
-      </section>
-
-      <!-- Keywords Tab -->
-      <section id="tab-keywords" class="tab-content">
-        <div class="card">
-          <label>Product Info</label>
-          <textarea id="kwProduct" rows="2" placeholder="Describe your product (title, features, target audience)..."></textarea>
-        </div>
-        <div class="card">
-          <label>Platform</label>
-          <select id="kwPlatform">
-            <option value="amazon">Amazon</option>
-            <option value="ebay">eBay</option>
-            <option value="etsy">Etsy</option>
-            <option value="shopify">Shopify</option>
-          </select>
-        </div>
-        <button id="keywordBtn" class="btn btn-primary btn-full">
-          🎯 Generate Keywords
-        </button>
-        <div id="keywordResult" class="result-box" style="display:none;"></div>
-      </section>
-
-      <!-- Marketing Tab -->
-      <section id="tab-marketing" class="tab-content">
-        <div class="card">
-          <label>Product Info</label>
-          <textarea id="mktProduct" rows="2" placeholder="Describe your product..."></textarea>
-        </div>
-        <div class="card">
-          <label>Target Customer & Pain Point</label>
-          <input type="text" id="mktAudience" placeholder="e.g., Busy moms who need quick meal prep" />
-        </div>
-        <div class="card">
-          <label>Ad Platform</label>
-          <select id="mktPlatform">
-            <option value="facebook">Facebook/Instagram Ads</option>
-            <option value="tiktok">TikTok</option>
-            <option value="google">Google Ads</option>
-            <option value="email">Email Marketing</option>
-          </select>
-        </div>
-        <button id="marketingBtn" class="btn btn-primary btn-full">
-          📝 Generate Marketing Copy
-        </button>
-        <div id="marketingResult" class="result-box" style="display:none;"></div>
-      </section>
-    </main>
-
-    <!-- Upgrade Banner -->
-    <div id="upgradeBanner" class="upgrade-banner" style="display: none;">
-      <div class="upgrade-text">
-        <strong>🚀 Upgrade to Pro</strong>
-        <span>$9/mo — Unlimited queries, all features</span>
-      </div>
-      <button id="upgradeBtn" class="btn btn-gold">Upgrade</button>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <span>Sellify AI v1.0</span>
-      <span>|</span>
-      <a href="#" id="openOptions">API Settings</a>
-    </footer>
+  <!-- Platform detection -->
+  <div class="platform-row" id="platformBar" style="display:none">
+    <span id="platformIcon"></span>
+    <span id="platformLabel"></span>
+    <button id="scrapeBtn" style="margin-left:auto;padding:4px 10px;font-size:10px;border:1px solid var(--border);border-radius:6px;background:var(--card);color:var(--dim);cursor:pointer;font-family:inherit;">Scan Product</button>
   </div>
 
-  <!-- Loading Overlay -->
-  <div id="loading" class="loading-overlay" style="display: none;">
-    <div class="spinner"></div>
-    <span>AI is working...</span>
+  <!-- Nav -->
+  <nav class="nav">
+    <button class="tab active" data-tab="optimize">Listing Optimizer</button>
+    <button class="tab" data-tab="reviews">Review Analyzer</button>
+    <button class="tab" data-tab="keywords">Keywords</button>
+    <button class="tab" data-tab="marketing">Ad Copy</button>
+  </nav>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Optimize Tab -->
+    <section class="tab-content active" id="tab-optimize">
+      <div class="section">
+        <div class="label">Product Title</div>
+        <textarea id="optTitle" rows="2" placeholder="e.g. Wireless Bluetooth Headphones, Active Noise Cancelling, 40H Battery Life..."></textarea>
+      </div>
+      <div class="section">
+        <div class="label">Bullet Points / Features</div>
+        <textarea id="optDesc" rows="4" placeholder="Enter your current bullet points or product features..."></textarea>
+      </div>
+      <div class="section">
+        <div class="label">Category</div>
+        <input id="optCategory" placeholder="e.g. Electronics > Headphones > Over-Ear">
+      </div>
+      <button class="btn btn-go" id="optimizeBtn">Analyze & Optimize Listing</button>
+      <div class="loading-overlay" id="loading">
+        <div class="ring"></div>
+        <div class="msg">AI is analyzing your listing...</div>
+      </div>
+      <div class="result-box" id="optimizeResult">
+        <div class="r-header">
+          <span class="r-title">AI Optimization Report</span>
+          <span class="r-badge">Optimized</span>
+        </div>
+        <div class="r-body" id="optimizeResultBody"></div>
+        <div class="r-footer"><span id="optimizeTokens"></span><span>Sellify AI</span></div>
+      </div>
+    </section>
+
+    <!-- Reviews Tab -->
+    <section class="tab-content" id="tab-reviews">
+      <div class="section">
+        <div class="label">Paste Competitor Reviews</div>
+        <textarea id="reviewInput" rows="5" placeholder="5.0 Best headphones ever! Noise cancelling is incredible...&#10;3.0 Good sound but mic quality is poor for calls...&#10;4.0 Comfortable but ear cups get warm after hours..."></textarea>
+      </div>
+      <div class="section">
+        <div class="label">Product Context</div>
+        <input id="reviewContext" placeholder="e.g. Wireless Bluetooth Headphones">
+      </div>
+      <button class="btn btn-go" id="analyzeReviewsBtn">Analyze Competitor Reviews</button>
+      <div class="loading-overlay" id="loadingReviews">
+        <div class="ring"></div>
+        <div class="msg">Analyzing competitor reviews...</div>
+      </div>
+      <div class="result-box" id="reviewResult">
+        <div class="r-header">
+          <span class="r-title">Competitor Intelligence Report</span>
+          <span class="r-badge">Analyzed</span>
+        </div>
+        <div class="r-body" id="reviewResultBody"></div>
+        <div class="r-footer"><span id="reviewTokens"></span><span>Sellify AI</span></div>
+      </div>
+    </section>
+
+    <!-- Keywords Tab -->
+    <section class="tab-content" id="tab-keywords">
+      <div class="section">
+        <div class="label">Product Description</div>
+        <textarea id="kwProduct" rows="3" placeholder="Describe your product and target audience..."></textarea>
+      </div>
+      <div class="section">
+        <div class="label">Platform</div>
+        <select id="kwPlatform">
+          <option value="amazon">Amazon</option>
+          <option value="ebay">eBay</option>
+          <option value="etsy">Etsy</option>
+          <option value="shopify">Shopify</option>
+        </select>
+      </div>
+      <button class="btn btn-go" id="keywordBtn">Generate Keyword Strategy</button>
+      <div class="loading-overlay" id="loadingKeywords"></div>
+      <div class="result-box" id="keywordResult">
+        <div class="r-header">
+          <span class="r-title">Keyword Strategy Report</span>
+          <span class="r-badge">Generated</span>
+        </div>
+        <div class="r-body" id="keywordResultBody"></div>
+        <div class="r-footer"><span id="keywordTokens"></span><span>Sellify AI</span></div>
+      </div>
+    </section>
+
+    <!-- Marketing Tab -->
+    <section class="tab-content" id="tab-marketing">
+      <div class="section">
+        <div class="label">Product Info</div>
+        <textarea id="mktProduct" rows="3" placeholder="Describe your product and its main benefits..."></textarea>
+      </div>
+      <div class="section">
+        <div class="label">Target Customer & Pain Point</div>
+        <input id="mktAudience" placeholder="e.g. Busy professionals who want premium audio without the premium price">
+      </div>
+      <div class="section">
+        <div class="label">Platform</div>
+        <select id="mktPlatform">
+          <option value="facebook">Facebook / Instagram Ads</option>
+          <option value="tiktok">TikTok</option>
+          <option value="google">Google Ads</option>
+          <option value="email">Email Marketing</option>
+        </select>
+      </div>
+      <button class="btn btn-go" id="marketingBtn">Generate Marketing Copy</button>
+      <div class="loading-overlay" id="loadingMarketing"></div>
+      <div class="result-box" id="marketingResult">
+        <div class="r-header">
+          <span class="r-title">Marketing Copy Report</span>
+          <span class="r-badge">Generated</span>
+        </div>
+        <div class="r-body" id="marketingResultBody"></div>
+        <div class="r-footer"><span id="marketingTokens"></span><span>Sellify AI</span></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Upgrade Banner -->
+  <div class="upgrade-banner" id="upgradeBanner" style="display:none">
+    <div class="upg-text">
+      <strong>Upgrade to Pro — Unlimited Optimizations</strong>
+      <span>65 CNY lifetime · One payment, forever access</span>
+    </div>
+    <button class="btn btn-upgrade" id="upgradeBtn" style="width:auto;margin:0">Upgrade</button>
   </div>
+
+  <!-- Footer -->
+  <footer class="ftr">
+    <span>Sellify AI v1.0</span>
+    <a href="#" id="openOptions">Settings</a>
+  </footer>
 
   <!-- Toast -->
   <div id="toast" class="toast"></div>
 
-  <script src="../lib/sellify-ai.js"></script>
-  <script src="popup.js"></script>
+</div>
+<script src="../lib/sellify-ai.js"></script>
+<script src="popup.js"></script>
 </body>
 </html>
