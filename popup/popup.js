@@ -227,13 +227,9 @@ async function handleMarketing() {
 
 // --- Upgrade ---
 async function handleUpgrade() {
-  // Open Stripe payment link (to be configured)
-  const settings = await SellifyAI.getSettings();
-  if (settings.stripeLink) {
-    chrome.tabs.create({ url: settings.stripeLink });
-  } else {
-    showToast('Payment system coming soon! Check back in a few days.', 'success');
-  }
+  // Open the payment page
+  const payUrl = 'https://cdn.jsdelivr.net/gh/wangyaojie1/sellify-ai@master/payment/upgrade-cn.html';
+  chrome.tabs.create({ url: payUrl });
 }
 
 // --- Helpers ---
