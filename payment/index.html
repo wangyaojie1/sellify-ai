@@ -1,138 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellify AI Pro — Upgrade</title>
+  <title>Sellify AI Pro</title>
   <style>
-    :root { --bg: #0f1117; --surface: #1a1d27; --border: #2e3347; --text: #e8ecf1; --muted: #8b91a8; --primary: #6366f1; --gold: #f59e0b; --success: #10b981; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    :root {
+      --bg: #0a0a0f; --surface: #111118; --card: #16161f; --border: #222233;
+      --text: #f0f0f5; --text2: #8888aa; --primary: #6c5ce7; --primary-light: #a29bfe;
+      --primary-glow: rgba(108,92,231,0.15); --gold: #ffa726; --success: #00c853;
+      --danger: #ff5252; --wechat: #07c160; --alipay: #1677ff;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px; max-width: 480px; width: 100%; text-align: center; }
-    .logo { font-size: 48px; }
-    h1 { font-size: 22px; margin: 8px 0 4px; }
-    .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
-    .tabs { display: flex; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .tab { flex: 1; padding: 10px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--muted); border-bottom: 2px solid transparent; background: none; border-left: none; border-right: none; border-top: none; }
-    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .price { font-size: 36px; font-weight: 800; color: var(--gold); margin: 12px 0; }
-    .price span { font-size: 15px; font-weight: 400; color: var(--muted); }
-    ul { text-align: left; margin: 12px 0; }
-    ul li { padding: 5px 0; font-size: 13px; list-style: none; }
-    ul li::before { content: '✓ '; color: #10b981; font-weight: 700; }
-    .qr-box { display: flex; gap: 12px; margin: 16px 0; justify-content: center; }
-    .qr-item img { width: 130px; height: 130px; border-radius: 8px; }
-    .alipay-img { border: 2px solid #1677FF; }
-    .wechat-img { border: 2px solid #07C160; }
-    input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 14px; text-align: center; margin: 8px 0; }
-    input:focus { outline: none; border-color: var(--primary); }
-    .btn { display: block; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
-    .btn-gold { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #1a1a1a); }
-    .btn-primary { background: var(--primary); color: white; }
-    .result { margin-top: 16px; padding: 16px; background: #0d2818; border: 1px solid #1a5c36; border-radius: 8px; display: none; }
-    .result .key { font-size: 22px; font-weight: 700; color: var(--success); letter-spacing: 2px; word-break: break-all; margin: 8px 0; }
-    .copy-btn { background: var(--success); color: white; margin-top: 8px; }
-    .stripe-btn { background: #635BFF; color: white; font-size: 15px; text-decoration: none; display: block; padding: 14px; border-radius: 8px; font-weight: 600; margin: 16px 0; }
-    .stripe-btn:hover { opacity: 0.9; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(108,92,231,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(255,167,38,0.05) 0%, transparent 50%);
+    }
+    .container { display: flex; gap: 32px; max-width: 880px; width: 100%; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+
+    /* Product Card */
+    .product-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+      padding: 40px; flex: 1 1 360px; max-width: 420px; min-width: 320px;
+      position: relative; overflow: hidden;
+    }
+    .product-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--gold));
+    }
+    .badge-row {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary-glow); border: 1px solid rgba(108,92,231,0.3);
+      padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 600;
+      color: var(--primary-light); margin-bottom: 20px;
+    }
+    .badge-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .logo-icon {
+      width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), #a29bfe);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;
+    }
+    .logo-text { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+    .logo-text span { background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+    .features { display: grid; gap: 12px; margin-bottom: 28px; }
+    .feature { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #ccc; line-height: 1.5; }
+    .feature .ficon { width: 20px; height: 20px; background: rgba(0,200,83,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+    .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+    .price-value { font-size: 48px; font-weight: 900; letter-spacing: -2px; color: var(--gold); }
+    .price-unit { font-size: 16px; font-weight: 500; color: var(--text2); }
+    .price-old { font-size: 14px; color: var(--text2); text-decoration: line-through; }
+    .price-badge { display: inline-block; background: rgba(255,82,82,0.15); color: var(--danger); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-left: 4px; }
+    .platforms { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+    .ptag { font-size: 11px; padding: 5px 10px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); color: var(--text2); font-weight: 500; }
+    .guarantee { display: flex; align-items: center; gap: 8px; padding: 12px; background: rgba(0,200,83,0.05); border: 1px solid rgba(0,200,83,0.15); border-radius: 10px; font-size: 12px; color: var(--success); margin-top: 20px; }
+
+    /* Payment Card */
+    .payment-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+      padding: 32px; flex: 1 1 320px; max-width: 380px; min-width: 300px; position: sticky; top: 20px;
+    }
+    .payment-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+    .tabs { display: flex; background: var(--surface); border-radius: 10px; padding: 3px; margin-bottom: 20px; }
+    .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s; font-family: inherit; }
+    .tab-btn.active { background: var(--card); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .qr-wrapper { display: flex; gap: 12px; justify-content: center; margin: 16px 0; }
+    .qr-item { text-align: center; padding: 16px 12px 12px; background: #fff; border-radius: 12px; width: 142px; }
+    .qr-item img { width: 110px; height: 110px; border-radius: 4px; }
+    .qr-label { font-size: 12px; font-weight: 700; margin-top: 8px; }
+    .input-group { margin: 12px 0; }
+    .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .input-group input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 14px; font-family: inherit; text-align: center; transition: all 0.2s; }
+    .input-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; margin-top: 8px; }
+    .btn-gold { background: linear-gradient(135deg, #ffa726, #ff9800); color: #1a1a1a; box-shadow: 0 4px 16px rgba(255,167,38,0.2); }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(255,167,38,0.3); }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 16px rgba(108,92,231,0.2); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(108,92,231,0.3); }
+    .btn-success { background: var(--success); color: white; }
+    .stripe-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: #635BFF; color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; font-family: inherit; margin: 12px 0; transition: all 0.2s; }
+    .stripe-btn:hover { background: #7c75ff; }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: var(--text2); font-size: 11px; }
+    .divider::before,.divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .result-box { margin-top: 16px; padding: 20px; background: linear-gradient(135deg, rgba(0,200,83,0.08), rgba(0,200,83,0.02)); border: 1px solid rgba(0,200,83,0.2); border-radius: 14px; display: none; text-align: center; }
+    .result-box .key-text { font-size: 22px; font-weight: 800; letter-spacing: 1px; color: var(--success); margin: 10px 0; font-family: 'SF Mono','Fira Code',monospace; word-break: break-all; }
+    .result-box .steps { text-align: left; margin-top: 12px; font-size: 12px; color: #aaa; line-height: 2; }
+    .result-box .steps span { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--primary); color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700; margin-right: 6px; }
+    .footer-note { text-align: center; font-size: 11px; color: var(--text2); margin-top: 16px; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">⚡</div>
-    <h1>Sellify AI Pro</h1>
-    <p class="sub">Unlimited AI queries · All features unlocked</p>
+  <div class="container">
 
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('cn')">🇨🇳 国内支付</button>
-      <button class="tab" onclick="switchTab('intl')">🌍 International</button>
+    <!-- Product Info -->
+    <div class="product-card">
+      <div class="badge-row"><span class="badge-dot"></span> 电商卖家都在用</div>
+      <div class="logo-row"><div class="logo-icon">⚡</div><div class="logo-text">Sellify <span>AI</span></div></div>
+      <p class="subtitle">AI 产品优化助手 · 10 秒写出高转化 Listing</p>
+      <div class="features">
+        <div class="feature"><div class="ficon">🎯</div><div><strong>Listing 优化</strong><br>AI 重写标题、卖点、描述，提升搜索排名</div></div>
+        <div class="feature"><div class="ficon">📊</div><div><strong>竞品评论分析</strong><br>从差评中找缺口，差异化你的产品</div></div>
+        <div class="feature"><div class="ficon">🔑</div><div><strong>关键词挖掘</strong><br>生成高转化搜索词，提升曝光</div></div>
+        <div class="feature"><div class="ficon">📢</div><div><strong>广告文案</strong><br>Facebook、TikTok 广告文案一键生成</div></div>
+      </div>
+      <div class="platforms"><span class="ptag">Amazon</span><span class="ptag">eBay</span><span class="ptag">Etsy</span><span class="ptag">AliExpress</span><span class="ptag">Shopify</span></div>
+      <div class="price-row"><span class="price-value">¥65</span><span class="price-unit">/ 永久</span></div>
+      <div><span class="price-old">¥199</span><span class="price-badge">67% OFF</span></div>
+      <div class="guarantee">🔒 30 天无理由退款 · 零风险</div>
     </div>
 
-    <!-- Chinese Payment -->
-    <div id="tab-cn" class="tab-content active">
-      <div class="price">¥65<span> / 永久</span></div>
-      <div class="qr-box">
-        <div class="qr-item">
-          <img src="alipay-qr.jpg" alt="Alipay" class="alipay-img" />
-          <p style="font-size:12px;color:#1677FF;margin-top:4px;">支付宝</p>
+    <!-- Payment -->
+    <div class="payment-card">
+      <h3>💳 升级 Pro</h3>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('cn')">🇨🇳 国内</button>
+        <button class="tab-btn" onclick="switchTab('intl')">🌍 国际</button>
+      </div>
+
+      <div class="tab-panel active" id="panel-cn">
+        <div class="qr-wrapper">
+          <div class="qr-item"><img src="alipay-qr.jpg" alt="支付宝"><div class="qr-label" style="color:var(--alipay)">支付宝</div></div>
+          <div class="qr-item"><img src="wechat-qr.jpg" alt="微信"><div class="qr-label" style="color:var(--wechat)">微信支付</div></div>
         </div>
-        <div class="qr-item">
-          <img src="wechat-qr.jpg" alt="WeChat" class="wechat-img" />
-          <p style="font-size:12px;color:#07C160;margin-top:4px;">微信支付</p>
+        <p style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:12px;">扫码支付 ¥65</p>
+        <div class="input-group"><label>📧 邮箱</label><input type="email" id="cnEmail" placeholder="your@email.com"></div>
+        <button class="btn btn-gold" onclick="genCN()">🎫 获取许可证</button>
+      </div>
+
+      <div class="tab-panel" id="panel-intl">
+        <p style="text-align:center;font-size:14px;color:var(--text2);margin:8px 0;">信用卡支付</p>
+        <a href="#" id="stripeLink" class="stripe-btn">💳 Pay $9 with Card</a>
+        <div class="divider">或 PayPal</div>
+        <p style="text-align:center;font-size:14px;font-weight:600;">sellify.ai@proton.me</p>
+        <div class="input-group"><label>📧 Email</label><input type="email" id="intlEmail" placeholder="your@email.com"></div>
+        <button class="btn btn-primary" onclick="genIntl()">🎫 Get License Key</button>
+      </div>
+
+      <div class="result-box" id="resultBox">
+        <p style="font-size:12px;color:var(--text2);">🔑 Pro 许可证</p>
+        <div class="key-text" id="keyDisplay"></div>
+        <button class="btn btn-success" onclick="copyKey()" style="margin-top:8px;">📋 一键复制</button>
+        <div class="steps">
+          <p><span>1</span> 复制密钥</p><p><span>2</span> 扩展设置 → License Key</p><p><span>3</span> 粘贴 → Activate</p><p><span>4</span> ✅ Pro 已激活！</p>
         </div>
       </div>
-      <input type="email" id="cnEmail" placeholder="输入邮箱 → 立即获取许可证" />
-      <button class="btn btn-gold" onclick="genCN()">🎫 获取许可证</button>
+      <p class="footer-note">🔐 付款后立即获取 · 永久有效</p>
     </div>
 
-    <!-- International Payment -->
-    <div id="tab-intl" class="tab-content">
-      <div class="price">$9<span> / lifetime</span></div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Pay with credit card via Stripe</p>
-      <a href="#" id="stripeLink" class="stripe-btn">💳 Pay $9 with Card</a>
-      <p style="font-size:11px;color:var(--muted);margin:8px 0;">— or —</p>
-      <p style="font-size:13px;color:var(--muted);">PayPal: <strong>send $9 to sellify.ai@proton.me</strong></p>
-      <input type="email" id="intlEmail" placeholder="Enter your email" />
-      <button class="btn btn-primary" onclick="genIntl()">🎫 Get License Key</button>
-    </div>
-
-    <div class="result" id="result">
-      <p style="font-size:12px;color:var(--muted)">🔑 Your Pro License Key:</p>
-      <div class="key" id="keyDisplay"></div>
-      <button class="btn copy-btn" onclick="copyKey()">📋 Copy & Activate</button>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px;">
-        Open extension → ⚙️ Settings → paste key → Activate → ✅ Pro!
-      </p>
-    </div>
   </div>
 
   <script>
     const SECRET = 'sellify-ai-pro-secret-key-2026';
-
     async function genKey(email) {
       const data = email.trim().toLowerCase() + ':' + SECRET;
       const hb = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
       const ha = Array.from(new Uint8Array(hb));
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let key = '';
-      for (let i = 0; i < 20; i++) key += chars[ha[i % ha.length] % chars.length];
-      return 'SELL-' + key.substring(0,4) + '-' + key.substring(4,8) + '-' + key.substring(8,12) + '-' + key.substring(12,16);
+      let k = '';
+      for (let i = 0; i < 20; i++) k += chars[ha[i % ha.length] % chars.length];
+      return 'SELL-' + k.substring(0,4) + '-' + k.substring(4,8) + '-' + k.substring(8,12) + '-' + k.substring(12,16);
     }
-
     function showKey(key) {
       document.getElementById('keyDisplay').textContent = key;
-      document.getElementById('result').style.display = 'block';
-      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('resultBox').style.display = 'block';
+      document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
     }
-
     async function genCN() {
       const e = document.getElementById('cnEmail').value.trim();
       if (!e.includes('@')) { alert('请输入有效邮箱'); return; }
       showKey(await genKey(e));
     }
-
     async function genIntl() {
       const e = document.getElementById('intlEmail').value.trim();
       if (!e.includes('@')) { alert('Enter a valid email'); return; }
       showKey(await genKey(e));
     }
-
     function copyKey() {
       const k = document.getElementById('keyDisplay').textContent;
-      navigator.clipboard.writeText(k).then(() => alert('✅ Copied! Paste in extension settings.'));
+      navigator.clipboard.writeText(k).then(() => {
+        const b = event.target; b.textContent = '✅ 已复制！'; setTimeout(() => b.textContent = '📋 一键复制', 2000);
+      });
     }
-
-    function switchTab(tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelector('.tab:nth-child(' + (tab === 'cn' ? '1' : '2') + ')').classList.add('active');
-      document.getElementById('tab-' + tab).classList.add('active');
+    function switchTab(t) {
+      document.querySelectorAll('.tab-btn,.tab-panel').forEach(e => e.classList.remove('active'));
+      document.getElementById('panel-' + t).classList.add('active');
+      document.querySelector('.tab-btn:nth-child(' + (t === 'cn' ? '1' : '2') + ')').classList.add('active');
     }
-
-    // Set Stripe link if configured
-    const STRIPE_URL = localStorage.getItem('sellify_stripe_url') || '#';
-    document.getElementById('stripeLink').href = STRIPE_URL;
+    document.getElementById('stripeLink').href = localStorage.getItem('sellify_stripe_url') || '#';
   </script>
 </body>
 </html>

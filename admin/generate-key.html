@@ -3,98 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sellify AI - 生成许可证</title>
+  <title>Sellify AI · 许可证管理</title>
   <style>
-    :root { --bg: #0f1117; --surface: #1a1d27; --border: #2e3347; --text: #e8ecf1; --muted: #8b91a8; --primary: #6366f1; --gold: #f59e0b; --success: #10b981; }
+    :root { --bg: #0a0a0f; --surface: #111118; --card: #16161f; --border: #222233; --text: #f0f0f5; --text2: #8888aa; --primary: #6c5ce7; --gold: #ffa726; --success: #00c853; --danger: #ff5252; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px; max-width: 480px; width: 100%; }
-    h1 { font-size: 20px; margin-bottom: 24px; text-align: center; }
-    label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; margin-top: 12px; }
-    input, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-family: monospace; font-size: 14px; }
-    input:focus, textarea:focus { outline: none; border-color: var(--primary); }
-    .btn { display: block; width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 16px; }
-    .btn:hover { opacity: 0.9; }
-    .result { margin-top: 16px; padding: 16px; background: #0d2818; border: 1px solid #1a5c36; border-radius: 8px; display: none; }
-    .result .key { font-size: 22px; font-weight: 700; color: var(--success); letter-spacing: 2px; text-align: center; margin: 8px 0; }
-    .copy-btn { background: var(--success); margin-top: 8px; }
-    .history { margin-top: 24px; font-size: 12px; color: var(--muted); }
-    .history-item { padding: 6px 0; border-bottom: 1px solid var(--border); }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px; max-width: 480px; width: 100%; }
+    .card::before { content: ''; display: block; height: 3px; background: linear-gradient(90deg, var(--primary), var(--gold)); margin: -36px -36px 24px -36px; border-radius: 20px 20px 0 0; }
+    h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .input-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); font-size: 14px; font-family: inherit; }
+    .input-group input:focus { outline: none; border-color: var(--primary); }
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-success { background: var(--success); color: white; margin-top: 8px; }
+    .result { margin-top: 16px; padding: 20px; background: linear-gradient(135deg, rgba(0,200,83,0.08), rgba(0,200,83,0.02)); border: 1px solid rgba(0,200,83,0.2); border-radius: 14px; display: none; }
+    .result .key { font-size: 24px; font-weight: 800; letter-spacing: 1px; color: var(--success); text-align: center; margin: 8px 0; font-family: 'SF Mono', monospace; word-break: break-all; }
+    .history { margin-top: 28px; }
+    .history h4 { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+    .h-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--surface); border-radius: 8px; margin-bottom: 6px; font-size: 13px; }
+    .h-item code { font-size: 13px; color: var(--primary); }
+    .h-time { font-size: 11px; color: var(--text2); }
+    .empty { text-align: center; color: var(--text2); font-size: 13px; padding: 20px; }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>🔑 生成 Pro 许可证</h1>
+    <h2>🔑 生成 Pro 许可证</h2>
 
-    <label>客户邮箱</label>
-    <input type="email" id="email" placeholder="customer@gmail.com" />
-
-    <label>客户名称（可选）</label>
-    <input type="text" id="name" placeholder="张三" />
-
-    <button class="btn" onclick="generate()">🎫 生成许可证密钥</button>
-
-    <div class="result" id="result">
-      <p style="font-size:12px;color:var(--muted)">许可证密钥：</p>
-      <div class="key" id="keyDisplay"></div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px">
-        客户邮箱：<span id="emailDisplay" style="color:white"></span>
-      </p>
-      <button class="btn copy-btn" onclick="copyKey()">📋 复制许可证</button>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px">
-        发给客户：<br>
-        「感谢购买 Sellify AI Pro！您的许可证密钥：<strong id="keyForEmail"></strong><br>
-        打开扩展设置 → License Key → 粘贴 → Activate 即可解锁 Pro」
-      </p>
+    <div class="input-group">
+      <label>📧 客户邮箱</label>
+      <input type="email" id="email" placeholder="customer@email.com">
+    </div>
+    <div class="input-group">
+      <label>👤 备注（可选）</label>
+      <input type="text" id="name" placeholder="客户名称 / 来源">
     </div>
 
-    <div class="history" id="history"></div>
+    <button class="btn btn-primary" onclick="generate()">🎫 生成许可证密钥</button>
+
+    <div class="result" id="result">
+      <p style="font-size:12px;color:var(--text2);text-align:center;">🔑 许可证密钥</p>
+      <div class="key" id="keyDisplay"></div>
+      <p style="font-size:12px;color:var(--text2);text-align:center;margin:4px 0;">
+        📧 <span id="emailDisplay" style="color:var(--text);"></span>
+      </p>
+      <button class="btn btn-success" onclick="copyKey()">📋 复制密钥</button>
+    </div>
+
+    <div class="history">
+      <h4>📋 最近生成</h4>
+      <div id="historyList"><div class="empty">暂无记录</div></div>
+    </div>
   </div>
 
   <script>
-    function generateKey() {
+    const SECRET = 'sellify-ai-pro-secret-key-2026';
+
+    async function genKey(email) {
+      const data = email.trim().toLowerCase() + ':' + SECRET;
+      const hb = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+      const ha = Array.from(new Uint8Array(hb));
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let key = '';
-      for (let i = 0; i < 24; i++) {
-        if (i > 0 && i % 4 === 0) key += '-';
-        key += chars[Math.floor(Math.random() * chars.length)];
-      }
-      return key;
+      let k = '';
+      for (let i = 0; i < 20; i++) k += chars[ha[i % ha.length] % chars.length];
+      return 'SELL-' + k.substring(0,4) + '-' + k.substring(4,8) + '-' + k.substring(8,12) + '-' + k.substring(12,16);
     }
 
     function generate() {
       const email = document.getElementById('email').value.trim();
       const name = document.getElementById('name').value.trim();
+      if (!email || !email.includes('@')) { alert('请输入有效的客户邮箱'); return; }
 
-      if (!email) { alert('请输入客户邮箱'); return; }
+      genKey(email).then(key => {
+        document.getElementById('keyDisplay').textContent = key;
+        document.getElementById('emailDisplay').textContent = email;
+        document.getElementById('result').style.display = 'block';
 
-      const key = generateKey();
-      document.getElementById('keyDisplay').textContent = key;
-      document.getElementById('emailDisplay').textContent = email;
-      document.getElementById('keyForEmail').textContent = key;
-      document.getElementById('result').style.display = 'block';
-
-      // Save to history
-      const history = JSON.parse(localStorage.getItem('sellify_keys') || '[]');
-      history.unshift({ email, name, key, time: new Date().toLocaleString() });
-      localStorage.setItem('sellify_keys', JSON.stringify(history.slice(0, 20)));
-      renderHistory();
+        const history = JSON.parse(localStorage.getItem('sellify_keys') || '[]');
+        history.unshift({ email, name, key, time: new Date().toLocaleString('zh-CN') });
+        localStorage.setItem('sellify_keys', JSON.stringify(history.slice(0, 30)));
+        renderHistory();
+      });
     }
 
     function copyKey() {
-      const key = document.getElementById('keyDisplay').textContent;
-      navigator.clipboard.writeText(key).then(() => {
-        alert('已复制！发给客户即可。');
+      const k = document.getElementById('keyDisplay').textContent;
+      navigator.clipboard.writeText(k).then(() => {
+        const b = event.target; b.textContent = '✅ 已复制！发给客户即可'; setTimeout(() => b.textContent = '📋 复制密钥', 2000);
       });
     }
 
     function renderHistory() {
       const history = JSON.parse(localStorage.getItem('sellify_keys') || '[]');
-      document.getElementById('history').innerHTML = history.length
-        ? '<h3 style="margin-bottom:8px">📋 最近生成：</h3>' + history.map(h =>
-            `<div class="history-item">${h.time} — ${h.email} — <code>${h.key}</code></div>`
-          ).join('')
-        : '';
+      const el = document.getElementById('historyList');
+      if (!history.length) { el.innerHTML = '<div class="empty">暂无记录</div>'; return; }
+      el.innerHTML = history.map(h =>
+        `<div class="h-item"><div><strong>${h.email}</strong><br><span class="h-time">${h.time}</span></div><code>${h.key}</code></div>`
+      ).join('');
     }
 
     renderHistory();
